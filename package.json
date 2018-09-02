@@ -1,0 +1,14 @@
+{
+  "name": "food-tracker-gui",
+  "version": "1.0.0",
+  "description": "The GUI for my food-tracker app.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./launch.js"
+  },
+  "author": "Tanis Kint",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.16.3"
+  }
+}
