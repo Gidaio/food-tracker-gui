@@ -1,13 +1,17 @@
 import { element } from "./app.js"
 import { Component } from "./component.js"
+import { Datastore } from "./datastore.js"
+
+interface LoginRequest {
+  username: string
+  password: string
+}
 
 interface LoginResponse {
   authorization: string
 }
 
 export class LoginComponent extends Component {
-  private authorization: string = ""
-
   protected readonly template: HTMLElement = element([
     "form", { id: "login" },
     element(["input", { id: "username", type: "text", placeholder: "Username" }]),
@@ -17,8 +21,8 @@ export class LoginComponent extends Component {
     element(["button", { type: "submit" }, "Login!"])
   ])
 
-  public constructor() {
-    super()
+  public constructor(datastore: Datastore) {
+    super(datastore)
     this.template.addEventListener("submit", this.submitForm.bind(this))
   }
 
@@ -26,42 +30,21 @@ export class LoginComponent extends Component {
     event.preventDefault()
     event.stopPropagation()
 
-    const usernameInput = this.template.querySelector("input#username") as HTMLInputElement
-    const passwordInput = this.template.querySelector("input#password") as HTMLInputElement
+    const username = this.getInput("username").value
+    const password = this.getInput("password").value
 
-    console.log(`Got username ${usernameInput.value} and password ${passwordInput.value}.`)
+    console.log(`Got username ${username} and password ${password}.`)
 
-    this.login(usernameInput.value, passwordInput.value).then((response) => {
+    this.login(username, password).then((response) => {
       console.log(response)
-      this.authorization = response.authorization
+      this.datastore.Authorization = response.authorization
+      location.hash = "#/ingredients/create"
     }).catch((error) => {
       console.log(error)
     })
   }
 
   private async login(username: string, password: string): Promise<LoginResponse> {
-    return new Promise<LoginResponse>((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-
-      xhr.open("POST", "http://localhost:3000/login")
-
-      xhr.onload = (): void => {
-        console.log(`Got response data ${xhr.response}.`)
-        resolve(JSON.parse(xhr.response))
-      }
-
-      xhr.onerror = (): void => {
-        console.log("There was an error!")
-        reject(new Error("Derp."))
-      }
-
-      xhr.setRequestHeader("Content-Type", "application/json")
-      xhr.setRequestHeader("Authorization", this.authorization)
-
-      const body = JSON.stringify({ username, password })
-      console.log("Body", body)
-
-      xhr.send(body)
-    })
+    return this.request<LoginRequest, LoginResponse>("POST", "/login", { username, password })
   }
 }

@@ -1,5 +1,6 @@
 import { Component } from "./component.js"
 import { CreateIngredientComponent } from "./createIngredientComponent.js"
+import { Datastore } from "./datastore.js"
 import { LoginComponent } from "./loginComponent.js"
 
 interface ElementAttributes {
@@ -31,14 +32,16 @@ export function element(descriptor: ElementDescriptor): HTMLElement {
   return elementToCreate
 }
 
+const datastore = new Datastore()
+
 const mainElement = document.querySelector("main") as HTMLMainElement
 
-const defaultRoute: Component = new LoginComponent()
+const defaultRoute: Component = new LoginComponent(datastore)
 
 const routes: { [key: string]: Component } = {
   "": defaultRoute,
   "#/": defaultRoute,
-  "#/ingredients/create": new CreateIngredientComponent()
+  "#/ingredients/create": new CreateIngredientComponent(datastore)
 }
 
 window.onhashchange = (event: HashChangeEvent) => {
