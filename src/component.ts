@@ -1,18 +1,20 @@
+import { element } from "./app.js"
 import { Datastore } from "./datastore.js"
 
 const apiBaseURL = "http://localhost:3000"
 
-export abstract class Component {
-  protected abstract readonly template: HTMLElement
+export class Component {
+  protected template: HTMLElement
   protected datastore: Datastore
 
-  protected constructor(datastore: Datastore) {
+  public constructor(datastore: Datastore, root: Element) {
     this.datastore = datastore
+    this.template = this.buildTemplate()
+    root.appendChild(this.template)
   }
 
-  public mount(root: Element): void {
-    root.innerHTML = ""
-    root.appendChild(this.template)
+  protected buildTemplate(): HTMLElement {
+    return element(["div", undefined, "This is a basic component. You should extend it!"])
   }
 
   protected getInput(inputID: string): HTMLInputElement {

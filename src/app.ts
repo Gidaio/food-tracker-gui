@@ -36,18 +36,21 @@ const datastore = new Datastore()
 
 const mainElement = document.querySelector("main") as HTMLMainElement
 
-const defaultRoute: Component = new LoginComponent(datastore)
+const defaultRoute: typeof Component = LoginComponent
 
-const routes: { [key: string]: Component } = {
+const routes: { [key: string]: typeof Component } = {
   "": defaultRoute,
   "#/": defaultRoute,
-  "#/ingredients/create": new CreateIngredientComponent(datastore)
+  "#/ingredients/create": CreateIngredientComponent
 }
 
-window.onhashchange = (event: HashChangeEvent) => {
+window.onhashchange = setLocation
+
+function setLocation(): void {
+  mainElement.innerHTML = ""
+  const componentType = routes[location.hash]
   // tslint:disable-next-line:no-unused-expression
-  routes[location.hash].mount(mainElement)
+  new componentType(datastore, mainElement)
 }
 
-// tslint:disable-next-line:no-unused-expression
-routes[location.hash].mount(mainElement)
+setLocation()

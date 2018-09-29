@@ -1,6 +1,5 @@
 import { element } from "./app.js"
 import { Component } from "./component.js"
-import { Datastore } from "./datastore.js"
 
 interface LoginRequest {
   username: string
@@ -12,18 +11,19 @@ interface LoginResponse {
 }
 
 export class LoginComponent extends Component {
-  protected readonly template: HTMLElement = element([
-    "form", { id: "login" },
-    element(["input", { id: "username", type: "text", placeholder: "Username" }]),
-    element(["br"]),
-    element(["input", { id: "password", type: "password" }]),
-    element(["br"]),
-    element(["button", { type: "submit" }, "Login!"])
-  ])
+  protected buildTemplate(): HTMLElement {
+    const template = element([
+      "form", { id: "login" },
+      element(["input", { id: "username", type: "text", placeholder: "Username" }]),
+      element(["br"]),
+      element(["input", { id: "password", type: "password" }]),
+      element(["br"]),
+      element(["button", { type: "submit" }, "Login!"])
+    ])
 
-  public constructor(datastore: Datastore) {
-    super(datastore)
-    this.template.addEventListener("submit", this.submitForm.bind(this))
+    template.addEventListener("submit", this.submitForm.bind(this))
+
+    return template
   }
 
   private submitForm(event: Event): void {
