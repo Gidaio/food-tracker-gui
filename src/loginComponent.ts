@@ -30,15 +30,15 @@ export class LoginComponent extends Component {
     event.preventDefault()
     event.stopPropagation()
 
-    const username = this.getInput("username").value
-    const password = this.getInput("password").value
+    const username = this.getElementByID("username").value
+    const password = this.getElementByID("password").value
 
     console.log(`Got username ${username} and password ${password}.`)
 
     this.login(username, password).then((response) => {
       console.log(response)
       this.datastore.Authorization = response.authorization
-      location.hash = "#/ingredients/create"
+      location.hash = "#/ingredients"
     }).catch((error) => {
       console.log(error)
     })

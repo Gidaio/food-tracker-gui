@@ -32,9 +32,9 @@ export class CreateIngredientComponent extends Component {
     event.stopPropagation()
     event.preventDefault()
 
-    const ingredientName = this.getInput("ingredient-name").value
-    const ingredientAmount = this.getInput("ingredient-amount").valueAsNumber
-    const ingredientUnit = (this.template.querySelector("select#ingredient-unit") as HTMLSelectElement).value
+    const ingredientName = this.getElementByID("ingredient-name").value
+    const ingredientAmount = this.getElementByID("ingredient-amount").valueAsNumber
+    const ingredientUnit = this.getElementByID("ingredient-unit").value
 
     this.createIngredient(ingredientName, ingredientAmount, ingredientUnit).then(() => {
       console.log(`Created ingredient ${ingredientName}`)

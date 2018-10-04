@@ -1,6 +1,7 @@
 import { Component } from "./component.js"
 import { CreateIngredientComponent } from "./createIngredientComponent.js"
 import { Datastore } from "./datastore.js"
+import { ListIngredientsComponent } from "./listIngredientsComponent.js"
 import { LoginComponent } from "./loginComponent.js"
 
 interface ElementAttributes {
@@ -41,6 +42,7 @@ const defaultRoute: typeof Component = LoginComponent
 const routes: { [key: string]: typeof Component } = {
   "": defaultRoute,
   "#/": defaultRoute,
+  "#/ingredients": ListIngredientsComponent,
   "#/ingredients/create": CreateIngredientComponent
 }
 
