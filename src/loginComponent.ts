@@ -18,7 +18,9 @@ export class LoginComponent extends Component {
       element(["br"]),
       element(["input", { id: "password", type: "password" }]),
       element(["br"]),
-      element(["button", { type: "submit" }, "Login!"])
+      element(["button", { type: "submit" }, "Login!"]),
+      element(["br"]),
+      element(["p", { id: "error-message", color: "red" }])
     ])
 
     template.addEventListener("submit", this.submitForm.bind(this))
@@ -40,7 +42,7 @@ export class LoginComponent extends Component {
       this.datastore.Authorization = response.authorization
       location.hash = "#/ingredients"
     }).catch((error) => {
-      console.log(error)
+      this.getElementByID("error-message").innerText = error.error
     })
   }
 

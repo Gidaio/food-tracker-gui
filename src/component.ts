@@ -39,8 +39,9 @@ export class Component {
       xhr.open(method, `${apiBaseURL}${endpoint}`)
 
       xhr.onload = (): void => {
-        console.log(`Got response data ${xhr.response}.`)
-        resolve(JSON.parse(xhr.response))
+        console.log(`Got response data: ${xhr.response}`)
+        const parsedBody = JSON.parse(xhr.response)
+        parsedBody.error ? reject(parsedBody) : resolve(parsedBody)
       }
 
       xhr.onerror = (): void => {
@@ -51,7 +52,7 @@ export class Component {
       xhr.setRequestHeader("Content-Type", "application/json")
       xhr.setRequestHeader("Authorization", this.datastore.Authorization)
 
-      const stringifiedBody = method === "GET" ? "" : JSON.stringify(body)
+      const stringifiedBody = body ? JSON.stringify(body) : ""
       console.log("Body", stringifiedBody)
 
       xhr.send(stringifiedBody)
